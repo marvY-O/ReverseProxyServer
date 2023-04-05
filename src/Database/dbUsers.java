@@ -139,8 +139,5 @@ public class dbUsers {
     	return ans;
     }
 	
-	public static void main(String args[]) {
-		addEntry("192.168.1.4", "192.168.1.4", 2000);
-	}
 }
 

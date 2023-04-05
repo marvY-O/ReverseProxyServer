@@ -76,7 +76,7 @@ class ClientHandler implements Runnable {
 								//if (p.destination_ip == InetAddress.getLocalHost().getHostAddress());
 								if (p.pkt_id == -1){
 									System.out.printf("%s sending file to %s\n", p.client_ip, p.destination_ip);
-									dbUsers.addEntry(p.client_ip, p.destination_ip, p.payload.length);
+									dbUsers.addEntry(p.client_ip, p.destination_ip, p.pkt_no);
 								}
 								else if (p.pkt_id == -2) {
 									System.out.printf("Fetch request of %s from %s to %s\n", p.msg_name, p.client_ip, p.destination_ip);
@@ -86,7 +86,7 @@ class ClientHandler implements Runnable {
 									System.out.println("FALSE SECURITY CERTIFICATE ID!!");
 									continue;
 								}
-								p.client_ip = serverIP;
+								// p.client_ip = serverIP;
 								synchronized (buffer) {
 									if (buffer.containsKey(destAddr)) {
 										buffer.get(destAddr).add(p);

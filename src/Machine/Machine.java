@@ -207,7 +207,7 @@ public class Machine{
             	
             	Packet first = (Packet) ois.readObject();
             	String path = first.msg_name;
-            	String destIP = first.destination_ip;
+            	String destIP = first.client_ip;
             	
                 byte[] file;
                 File fileobj = new File(path);
