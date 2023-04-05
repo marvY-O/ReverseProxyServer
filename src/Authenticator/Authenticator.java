@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import Message.Packet;
+import Database.*;
 
 public class Authenticator {
     int port;
@@ -32,7 +33,7 @@ public class Authenticator {
                 	buffer.put(s.getInetAddress(), new LinkedList<Packet>());
                 }
                 
-                ClientHandler clientNew = new ClientHandler(s, buffer, certIDStore);
+                ClientHandler clientNew = new ClientHandler(s, buffer, certIDStore, serverIP);
                 
                 Thread t = new Thread(clientNew);
                 t.start();                  

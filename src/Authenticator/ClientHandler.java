@@ -12,11 +12,13 @@ class ClientHandler implements Runnable {
     Socket s;
     public HashMap<InetAddress, Queue<Packet>> buffer;
     public HashMap<InetAddress, String> certIDStore;
+	String serverIP;
       
-    public ClientHandler(Socket sc, HashMap<InetAddress, Queue<Packet>> buffer, HashMap<InetAddress, String> certIDStore) throws IOException{
+    public ClientHandler(Socket sc, HashMap<InetAddress, Queue<Packet>> buffer, HashMap<InetAddress, String> certIDStore, String serverIP) throws IOException{
         s = sc;
         this.buffer = buffer;
         this.certIDStore = certIDStore;
+		this.serverIP = serverIP;
     }
 
     public static String generate() {
@@ -84,6 +86,7 @@ class ClientHandler implements Runnable {
 									System.out.println("FALSE SECURITY CERTIFICATE ID!!");
 									continue;
 								}
+								p.client_ip = serverIP;
 								synchronized (buffer) {
 									if (buffer.containsKey(destAddr)) {
 										buffer.get(destAddr).add(p);
