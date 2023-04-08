@@ -37,9 +37,11 @@ public class Machine{
             
             System.out.printf("Enter username: ");
             cert.username = sc.next();
+//            cert.username = "marvy";
             
             System.out.printf("Enter password: ");
             cert.password = sc.next();
+//            cert.password = "admin";
             
             oos.writeObject(cert);
             
@@ -107,13 +109,9 @@ public class Machine{
 									if (p.pkt_id == -1) {
 										totalPkts = Integer.parseInt(p.msg_name);
 										byteLength = p.pkt_no;
-										System.out.println("Ready to receive "+totalPkts+" from "+p.client_ip);
+										System.out.println("Ready to receive "+totalPkts+" packets from "+p.client_ip);
 									}
-									else if (p.pkt_id == totalPkts) {
-										buffer.add(p);
-										System.out.printf("Received %d packets from %s\n",totalPkts, p.client_ip);
-										break;
-									}
+									
 									else {
 										int cnt = Math.round(p.pkt_id*20/totalPkts);
 										String cur = "|";
@@ -132,6 +130,13 @@ public class Machine{
 										System.out.printf(cur);
 										
 										receiveBuffer.add(p);
+										
+										if (p.pkt_id == totalPkts) {
+											buffer.add(p);
+											System.out.printf("Received %d packets from %s\n",totalPkts, p.client_ip);
+											break;
+										}
+										
 									}
 								}
 								
@@ -194,17 +199,7 @@ public class Machine{
 				return;
             }
             else if (x == 2) {
-//            	String path, destIP;
-//                
-//                System.out.printf("Name file to send: ");
-//                path = sc.next();
-//                //path = "test.jpg";
-//                
-//                System.out.printf("IP of Destination: ");
-//                destIP = sc.next();
-//                //destIP = "192.168.1.27";
-//                
-            	
+
             	Packet first = (Packet) ois.readObject();
             	String path = first.msg_name;
             	String destIP = first.client_ip;
@@ -256,13 +251,12 @@ public class Machine{
                         pkt.payload[j] = (byte) file[index];
                         index++;
                     }
-                    if (index==file.length && j<pyld_size){
-                        pkt.payload[j] = (byte) '\0';
-                    }
+
                     buffer.add(pkt);
                 }
 
         		int totalPkts = 0;
+
         		while (true) {
             		
             			if (!buffer.isEmpty()) {
@@ -273,10 +267,7 @@ public class Machine{
             						totalPkts = Integer.parseInt(p.msg_name);
             						System.out.printf("Sending %d packets to %s\n", totalPkts, p.destination_ip);
             					}
-            					else if (p.pkt_id == totalPkts) {
-            						System.out.printf("Sent %d packets to %s\n",totalPkts, p.destination_ip);
-									break;
-            					}
+            					
             					else {
         							int cnt = Math.round(p.pkt_id*20/totalPkts);
         							String cur = "|";
@@ -293,11 +284,16 @@ public class Machine{
         				    		}
         				            cur +="|" + p.pkt_id + "/" + totalPkts + "\r";
         				    		System.out.printf(cur);
+        				    		if (p.pkt_id == totalPkts) {
+                						System.out.printf("Sent %d packets to %s\n",totalPkts, p.destination_ip);
+    									break;
+                					}
         							
             					}
             					//Thread.sleep(1);
             				}
-            				catch (IOException e) {
+            				catch (IOException e) {	            		            oos.close();
+
             					System.out.printf("Error sending packets: ");
             					e.printStackTrace();
             		            
