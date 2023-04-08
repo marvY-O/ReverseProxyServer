@@ -12,7 +12,7 @@ public class run {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
                 NetworkInterface iface = interfaces.nextElement();
-                if (iface.isUp() && iface.getName().startsWith("w")) { // filter by WiFi interfaces
+                if (iface.isUp() && (iface.getName().startsWith("w") || iface.getName().startsWith("enp0s3")) ) { // filter by WiFi interfaces
                     Enumeration<InetAddress> addresses = iface.getInetAddresses();
                     while (addresses.hasMoreElements()) {
                         InetAddress addr = addresses.nextElement();

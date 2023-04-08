@@ -37,11 +37,9 @@ public class Machine{
             
             System.out.printf("Enter username: ");
             cert.username = sc.next();
-//            cert.username = "marvy";
             
             System.out.printf("Enter password: ");
             cert.password = sc.next();
-//            cert.password = "admin";
             
             oos.writeObject(cert);
             
@@ -132,7 +130,6 @@ public class Machine{
 										receiveBuffer.add(p);
 										
 										if (p.pkt_id == totalPkts) {
-											buffer.add(p);
 											System.out.printf("Received %d packets from %s\n",totalPkts, p.client_ip);
 											break;
 										}
